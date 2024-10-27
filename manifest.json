@@ -7,6 +7,5 @@
   "codeowners": [],
   "requirements": ["aiohttp"],
   "version": "0.5.0",
-  "iot_class": "cloud_polling",
-  "icon": "icon.png"
+  "iot_class": "cloud_polling"
 }
