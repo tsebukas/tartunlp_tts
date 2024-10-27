@@ -1,0 +1,26 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Tartu NLP TTS seaded",
+                "description": "Seadista Tartu NLP tekst-kõneks teenus",
+                "data": {
+                    "language": "Keel",
+                    "voice": "Hääl"
+                }
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Tartu NLP TTS seaded",
+                "description": "Muuda Tartu NLP tekst-kõneks teenuse seadeid",
+                "data": {
+                    "language": "Keel",
+                    "voice": "Hääl"
+                }
+            }
+        }
+    }
+}

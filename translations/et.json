@@ -1,0 +1,9 @@
+{
+    "platform": {
+        "tartunlp_tts": {
+            "options": {
+                "voice": "Hääl"
+            }
+        }
+    }
+}
