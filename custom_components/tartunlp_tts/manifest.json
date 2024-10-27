@@ -1,11 +1,11 @@
 {
   "domain": "tartunlp_tts",
   "name": "Tartu NLP Text-to-Speech",
-  "config_flow": true,
-  "documentation": "https://api.tartunlp.ai/text-to-speech/docs",
-  "dependencies": [],
   "codeowners": [],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://api.tartunlp.ai/text-to-speech/docs",
+  "iot_class": "cloud_polling",
   "requirements": ["aiohttp"],
-  "version": "0.5.0",
-  "iot_class": "cloud_polling"
+  "version": "0.5.0"
 }
