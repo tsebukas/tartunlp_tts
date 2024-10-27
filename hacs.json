@@ -1,7 +1,4 @@
 {
     "name": "Tartu NLP Text-to-Speech",
-    "render_readme": true,
-    "domain": "tartunlp_tts",
-    "issue_tracker": "https://github.com/tsebukas/tartunlp_tts/issues",
     "homeassistant": "2024.1.0"
 }
