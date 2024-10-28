@@ -44,7 +44,7 @@ async def async_setup_entry(
     language = config_entry.data.get(CONF_LANGUAGE, DEFAULT_LANG)
     voice = config_entry.data.get(CONF_VOICE, DEFAULT_VOICE)
 
-    async_add_entities([TartuNLPTTSEntity(hass, language, voice)], True)
+    async_add_entities([TartuNLPTTSEntity(hass, config_entry, language, voice)], True)
 
 async def async_setup_platform(
     hass: HomeAssistant,
@@ -56,18 +56,27 @@ async def async_setup_platform(
     language = config.get(CONF_LANG, DEFAULT_LANG)
     voice = config.get(CONF_VOICE, DEFAULT_VOICE)
 
-    async_add_entities([TartuNLPTTSEntity(hass, language, voice)], True)
+    # For YAML-based setup, use a fixed unique_id
+    async_add_entities([TartuNLPTTSEntity(hass, None, language, voice, "tartunlp_tts_yaml")], True)
 
 class TartuNLPTTSEntity(TextToSpeechEntity):
     """The TartuNLP TTS API provider."""
 
-    def __init__(self, hass: HomeAssistant, language: str, voice: str) -> None:
+    def __init__(
+        self, 
+        hass: HomeAssistant, 
+        config_entry: ConfigType | None,
+        language: str, 
+        voice: str,
+        yaml_id: str | None = None
+    ) -> None:
         """Initialize TartuNLP TTS provider."""
         self.hass = hass
         self._attr_name = "TartuNLP TTS"
         self._language = language
         self._voice = voice
-        self._attr_unique_id = f"tartunlp_tts_{voice}"
+        # Use config_entry.entry_id or yaml_id for persistent unique_id
+        self._attr_unique_id = yaml_id if yaml_id else f"tartunlp_tts_{config_entry.entry_id}"
         self._base_url = "https://api.tartunlp.ai/text-to-speech/v2"
 
     @property
