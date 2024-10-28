@@ -40,15 +40,18 @@ data:
 
 ## Saadaolevad hääled
 
-- mari (vaikimisi)
-- tambet
+- albert
+- indrek
 - kalev
-- külli
+- kylli
+- lee
+- liivika
+- luukas
+- mari (vaikimisi)
 - meelis
 - peeter
-- railik
-- albert
-- theme_unit
+- tambet
+- vesta
 
 ## Probleemidest teatamine
 

@@ -6,13 +6,16 @@ DEFAULT_VOICE = "mari"
 CONF_VOICE = "voice"
 
 SUPPORTED_VOICES = [
-    "mari",
-    "tambet",
+    "albert",
+    "indrek",
     "kalev",
-    "külli",
+    "kylli",
+    "lee",
+    "liivika",
+    "luukas",
+    "mari",
     "meelis",
     "peeter",
-    "railik",
-    "albert",
-    "theme_unit",
+    "tambet",
+    "vesta"
 ]
