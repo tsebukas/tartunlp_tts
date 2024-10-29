@@ -4,6 +4,7 @@ from __future__ import annotations
 import logging
 import aiohttp
 from typing import Any
+from urllib.parse import urlparse
 
 import voluptuous as vol
 
@@ -29,6 +30,14 @@ from .const import (
 )
 
 _LOGGER = logging.getLogger(__name__)
+
+def get_domain_from_url(url: str) -> str:
+    """Extract domain from URL."""
+    parsed = urlparse(url)
+    domain = parsed.netloc
+    if not domain:  # Handle cases where URL might not have protocol
+        domain = parsed.path.split('/')[0]
+    return domain
 
 PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
@@ -78,12 +87,14 @@ class TartuNLPTTSEntity(TextToSpeechEntity):
     ) -> None:
         """Initialize TartuNLP TTS provider."""
         self.hass = hass
-        self._attr_name = "TartuNLP TTS"
         self._language = language
         self._voice = voice
         self._base_url = base_url
         # Use config_entry.entry_id or yaml_id for persistent unique_id
         self._attr_unique_id = yaml_id if yaml_id else f"tartunlp_tts_{config_entry.entry_id}"
+        # Set dynamic name based on voice and API domain
+        domain = get_domain_from_url(base_url)
+        self._attr_name = f"TartuNLP TTS - {voice} ({domain})"
 
     @property
     def supported_languages(self) -> list[str]:

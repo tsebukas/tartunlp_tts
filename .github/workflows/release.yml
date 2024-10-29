@@ -4,7 +4,9 @@ on:
   push:
     tags:
       - "release"
-  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   validate:
@@ -19,6 +21,8 @@ jobs:
   create-release:
     #needs: validate
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
         
@@ -39,6 +43,8 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: softprops/action-gh-release@v1
         with:
           name: "v${{ steps.manifest_version.outputs.version }}"
@@ -46,4 +52,3 @@ jobs:
           body: ${{ steps.release_notes.outputs.NOTES }}
           draft: false
           prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
