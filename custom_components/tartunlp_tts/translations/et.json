@@ -1,8 +1,27 @@
 {
-    "platform": {
-        "tartunlp_tts": {
-            "options": {
-                "voice": "Hääl"
+    "config": {
+        "step": {
+            "user": {
+                "title": "Tartu NLP TTS seaded",
+                "description": "Seadista Tartu NLP tekst-kõneks teenus",
+                "data": {
+                    "language": "Keel",
+                    "voice": "Hääl",
+                    "base_url": "API URL"
+                }
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Tartu NLP TTS seaded",
+                "description": "Muuda Tartu NLP tekst-kõneks teenuse seadeid",
+                "data": {
+                    "language": "Keel",
+                    "voice": "Hääl",
+                    "base_url": "API URL"
+                }
             }
         }
     }

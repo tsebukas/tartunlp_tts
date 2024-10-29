@@ -1,0 +1,28 @@
+{
+    "config": {
+        "step": {
+            "user": {
+                "title": "Tartu NLP TTS Settings",
+                "description": "Configure Tartu NLP Text-to-Speech service",
+                "data": {
+                    "language": "Language",
+                    "voice": "Voice",
+                    "base_url": "API URL"
+                }
+            }
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Tartu NLP TTS Settings",
+                "description": "Modify Tartu NLP Text-to-Speech service settings",
+                "data": {
+                    "language": "Language",
+                    "voice": "Voice",
+                    "base_url": "API URL"
+                }
+            }
+        }
+    }
+}
