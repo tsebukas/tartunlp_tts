@@ -22,7 +22,9 @@ from .const import (
     DOMAIN,
     DEFAULT_LANG,
     DEFAULT_VOICE,
+    DEFAULT_BASE_URL,
     CONF_VOICE,
+    CONF_BASE_URL,
     SUPPORTED_VOICES,
 )
 
@@ -32,6 +34,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
     {
         vol.Optional(CONF_LANG, default=DEFAULT_LANG): vol.In(["et"]),
         vol.Optional(CONF_VOICE, default=DEFAULT_VOICE): vol.In(SUPPORTED_VOICES),
+        vol.Optional(CONF_BASE_URL, default=DEFAULT_BASE_URL): str,
     }
 )
 
@@ -43,8 +46,9 @@ async def async_setup_entry(
     """Set up TartuNLP TTS from config entry."""
     language = config_entry.data.get(CONF_LANGUAGE, DEFAULT_LANG)
     voice = config_entry.data.get(CONF_VOICE, DEFAULT_VOICE)
+    base_url = config_entry.data.get(CONF_BASE_URL, DEFAULT_BASE_URL)
 
-    async_add_entities([TartuNLPTTSEntity(hass, config_entry, language, voice)], True)
+    async_add_entities([TartuNLPTTSEntity(hass, config_entry, language, voice, base_url)], True)
 
 async def async_setup_platform(
     hass: HomeAssistant,
@@ -55,9 +59,10 @@ async def async_setup_platform(
     """Set up TartuNLP TTS platform from YAML."""
     language = config.get(CONF_LANG, DEFAULT_LANG)
     voice = config.get(CONF_VOICE, DEFAULT_VOICE)
+    base_url = config.get(CONF_BASE_URL, DEFAULT_BASE_URL)
 
     # For YAML-based setup, use a fixed unique_id
-    async_add_entities([TartuNLPTTSEntity(hass, None, language, voice, "tartunlp_tts_yaml")], True)
+    async_add_entities([TartuNLPTTSEntity(hass, None, language, voice, base_url, "tartunlp_tts_yaml")], True)
 
 class TartuNLPTTSEntity(TextToSpeechEntity):
     """The TartuNLP TTS API provider."""
@@ -68,6 +73,7 @@ class TartuNLPTTSEntity(TextToSpeechEntity):
         config_entry: ConfigType | None,
         language: str, 
         voice: str,
+        base_url: str,
         yaml_id: str | None = None
     ) -> None:
         """Initialize TartuNLP TTS provider."""
@@ -75,9 +81,9 @@ class TartuNLPTTSEntity(TextToSpeechEntity):
         self._attr_name = "TartuNLP TTS"
         self._language = language
         self._voice = voice
+        self._base_url = base_url
         # Use config_entry.entry_id or yaml_id for persistent unique_id
         self._attr_unique_id = yaml_id if yaml_id else f"tartunlp_tts_{config_entry.entry_id}"
-        self._base_url = "https://api.tartunlp.ai/text-to-speech/v2"
 
     @property
     def supported_languages(self) -> list[str]:

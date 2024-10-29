@@ -6,7 +6,8 @@
                 "description": "Seadista Tartu NLP tekst-kõneks teenus",
                 "data": {
                     "language": "Keel",
-                    "voice": "Hääl"
+                    "voice": "Hääl",
+                    "base_url": "API URL"
                 }
             }
         }
@@ -18,7 +19,8 @@
                 "description": "Muuda Tartu NLP tekst-kõneks teenuse seadeid",
                 "data": {
                     "language": "Keel",
-                    "voice": "Hääl"
+                    "voice": "Hääl",
+                    "base_url": "API URL"
                 }
             }
         }

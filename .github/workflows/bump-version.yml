@@ -1,0 +1,58 @@
+name: Bump Version
+
+on:
+  # push:
+  #   branches:
+  #     - main
+  #     - master
+  #   paths:
+  #     - 'custom_components/**'
+  #     - '!custom_components/**/manifest.json'
+  workflow_dispatch:
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+          
+      - name: Bump version
+        run: |
+          import json
+          import os
+          
+          manifest_path = 'custom_components/tartunlp_tts/manifest.json'
+          
+          with open(manifest_path, 'r') as f:
+              manifest = json.load(f)
+          
+          # Split version into parts
+          major, minor, patch = map(int, manifest['version'].split('.'))
+          
+          # Increment patch version
+          patch += 1
+          
+          # Update version in manifest
+          manifest['version'] = f"{major}.{minor}.{patch}"
+          
+          with open(manifest_path, 'w') as f:
+              json.dump(manifest, f, indent=2)
+              f.write('\n')  # Add newline at end of file
+        shell: python
+
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add custom_components/tartunlp_tts/manifest.json
+          git diff --staged --quiet || (git commit -m "Bump version" && git push)

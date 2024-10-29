@@ -10,7 +10,9 @@ from .const import (
     DOMAIN,
     DEFAULT_LANG,
     DEFAULT_VOICE,
+    DEFAULT_BASE_URL,
     CONF_VOICE,
+    CONF_BASE_URL,
     SUPPORTED_VOICES,
 )
 
@@ -31,6 +33,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             updated_data = {
                 CONF_LANGUAGE: user_input[CONF_LANGUAGE],
                 CONF_VOICE: user_input[CONF_VOICE],
+                CONF_BASE_URL: user_input[CONF_BASE_URL],
             }
             # Update the config entry
             self.hass.config_entries.async_update_entry(
@@ -41,6 +44,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
 
         current_voice = self.data.get(CONF_VOICE, DEFAULT_VOICE)
         current_language = self.data.get(CONF_LANGUAGE, DEFAULT_LANG)
+        current_base_url = self.data.get(CONF_BASE_URL, DEFAULT_BASE_URL)
 
         schema = {
             vol.Required(
@@ -51,6 +55,10 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 CONF_VOICE,
                 default=current_voice
             ): vol.In(SUPPORTED_VOICES),
+            vol.Required(
+                CONF_BASE_URL,
+                default=current_base_url
+            ): str,
         }
 
         return self.async_show_form(
@@ -82,12 +90,14 @@ class TartuNLPTTSConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 data={
                     CONF_LANGUAGE: user_input[CONF_LANGUAGE],
                     CONF_VOICE: user_input[CONF_VOICE],
+                    CONF_BASE_URL: user_input[CONF_BASE_URL],
                 }
             )
 
         schema = {
             vol.Required(CONF_LANGUAGE, default=DEFAULT_LANG): vol.In(["et"]),
             vol.Required(CONF_VOICE, default=DEFAULT_VOICE): vol.In(SUPPORTED_VOICES),
+            vol.Required(CONF_BASE_URL, default=DEFAULT_BASE_URL): str,
         }
 
         return self.async_show_form(

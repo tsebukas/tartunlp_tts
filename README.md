@@ -10,6 +10,7 @@ Home Assistant integratsioon Tartu NLP tekst-kõneks teenuse jaoks.
 - Võimaldab valida erinevate häälte vahel
 - Lihtne seadistamine läbi Home Assistant UI
 - Täielik integratsioon Home Assistant TTS süsteemiga
+- Konfigureeritav API URL
 
 ## Installeerimine
 
@@ -38,7 +39,15 @@ data:
     voice: "mari"
 ```
 
-## Saadaolevad hääled
+## Seadistamine
+
+### API URL
+Vaikimisi kasutatakse URL-i `https://api.tartunlp.ai/text-to-speech/v2`. Kui soovid kasutada teist API URL-i, saad seda muuta:
+1. Integratsiooni lisamisel
+2. Või hiljem seadete alt:
+   - Settings -> Devices & Services -> Tartu NLP TTS -> Configure
+
+### Saadaolevad hääled
 
 - albert
 - indrek
