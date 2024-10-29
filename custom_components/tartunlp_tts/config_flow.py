@@ -1,5 +1,6 @@
 """Config flow for TartuNLP Text-to-Speech integration."""
 import voluptuous as vol
+from urllib.parse import urlparse
 
 from homeassistant import config_entries
 from homeassistant.const import CONF_LANGUAGE
@@ -15,6 +16,14 @@ from .const import (
     CONF_BASE_URL,
     SUPPORTED_VOICES,
 )
+
+def get_domain_from_url(url: str) -> str:
+    """Extract domain from URL."""
+    parsed = urlparse(url)
+    domain = parsed.netloc
+    if not domain:  # Handle cases where URL might not have protocol
+        domain = parsed.path.split('/')[0]
+    return domain
 
 class OptionsFlowHandler(config_entries.OptionsFlow):
     """Handle options flow for TartuNLP TTS."""
@@ -35,10 +44,13 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
                 CONF_VOICE: user_input[CONF_VOICE],
                 CONF_BASE_URL: user_input[CONF_BASE_URL],
             }
-            # Update the config entry
+            # Update the config entry with new title
+            domain = get_domain_from_url(user_input[CONF_BASE_URL])
+            title = f"{user_input[CONF_VOICE]} ({domain})"
             self.hass.config_entries.async_update_entry(
                 self.config_entry,
-                data=updated_data
+                data=updated_data,
+                title=title
             )
             return self.async_create_entry(title="", data=updated_data)
 
@@ -85,8 +97,10 @@ class TartuNLPTTSConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         errors = {}
 
         if user_input is not None:
+            domain = get_domain_from_url(user_input[CONF_BASE_URL])
+            title = f"{user_input[CONF_VOICE]} ({domain})"
             return self.async_create_entry(
-                title="Tartu NLP TTS",
+                title=title,
                 data={
                     CONF_LANGUAGE: user_input[CONF_LANGUAGE],
                     CONF_VOICE: user_input[CONF_VOICE],
