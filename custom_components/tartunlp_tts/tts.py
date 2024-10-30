@@ -57,7 +57,13 @@ async def async_setup_entry(
     voice = config_entry.data.get(CONF_VOICE, DEFAULT_VOICE)
     base_url = config_entry.data.get(CONF_BASE_URL, DEFAULT_BASE_URL)
 
-    async_add_entities([TartuNLPTTSEntity(hass, config_entry, language, voice, base_url)], True)
+    # Get the number of existing entries
+    entry_num = len([
+        entry for entry in hass.config_entries.async_entries(DOMAIN)
+        if entry.entry_id != config_entry.entry_id
+    ]) + 1
+
+    async_add_entities([TartuNLPTTSEntity(hass, config_entry, language, voice, base_url, entry_num)], True)
 
 async def async_setup_platform(
     hass: HomeAssistant,
@@ -70,8 +76,8 @@ async def async_setup_platform(
     voice = config.get(CONF_VOICE, DEFAULT_VOICE)
     base_url = config.get(CONF_BASE_URL, DEFAULT_BASE_URL)
 
-    # For YAML-based setup, use a fixed unique_id
-    async_add_entities([TartuNLPTTSEntity(hass, None, language, voice, base_url, "tartunlp_tts_yaml")], True)
+    # For YAML-based setup, use yaml suffix
+    async_add_entities([TartuNLPTTSEntity(hass, None, language, voice, base_url, "yaml")], True)
 
 class TartuNLPTTSEntity(TextToSpeechEntity):
     """The TartuNLP TTS API provider."""
@@ -83,7 +89,7 @@ class TartuNLPTTSEntity(TextToSpeechEntity):
         language: str, 
         voice: str,
         base_url: str,
-        yaml_id: str | None = None
+        entry_num: str | int,
     ) -> None:
         """Initialize TartuNLP TTS provider."""
         self.hass = hass
@@ -92,12 +98,10 @@ class TartuNLPTTSEntity(TextToSpeechEntity):
         self._base_url = base_url
         
         # Set simple entity_id format
-        if yaml_id:
-            self._attr_unique_id = yaml_id
-        else:
-            # Extract numeric part from config_entry.entry_id (usually looks like "1a2b3c4d")
-            entry_num = len(hass.config_entries.async_entries(DOMAIN)) + 1
-            self._attr_unique_id = f"tartunlp_tts_{entry_num}"
+        self.entity_id = f"tts.tartunlp_tts_{entry_num}"
+        
+        # Set unique_id for internal use
+        self._attr_unique_id = f"tartunlp_tts_{entry_num}"
         
         # Set descriptive name for display
         domain = get_domain_from_url(base_url)
