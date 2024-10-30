@@ -90,9 +90,16 @@ class TartuNLPTTSEntity(TextToSpeechEntity):
         self._language = language
         self._voice = voice
         self._base_url = base_url
-        # Use config_entry.entry_id or yaml_id for persistent unique_id
-        self._attr_unique_id = yaml_id if yaml_id else f"tartunlp_tts_{config_entry.entry_id}"
-        # Set dynamic name based on voice and API domain
+        
+        # Set simple entity_id format
+        if yaml_id:
+            self._attr_unique_id = yaml_id
+        else:
+            # Extract numeric part from config_entry.entry_id (usually looks like "1a2b3c4d")
+            entry_num = len(hass.config_entries.async_entries(DOMAIN)) + 1
+            self._attr_unique_id = f"tartunlp_tts_{entry_num}"
+        
+        # Set descriptive name for display
         domain = get_domain_from_url(base_url)
         self._attr_name = f"TartuNLP TTS - {voice} ({domain})"
 

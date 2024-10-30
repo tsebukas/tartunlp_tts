@@ -1,12 +1,12 @@
 {
   "domain": "tartunlp_tts",
   "name": "Tartu NLP Text-to-Speech",
-  "codeowners": ["@tsebukas"],
+  "codeowners": [],
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://api.tartunlp.ai/text-to-speech/docs",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/tsebukas/tartunlp_tts/issues",
-  "requirements": [],
-  "version": "0.10.0"
+  "requirements": ["aiohttp"],
+  "version": "0.11.0"
 }
